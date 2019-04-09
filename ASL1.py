@@ -3,7 +3,7 @@ import numpy as np
 import util as ut
 import svm_train as st
 import re
-model=st.trainSVM(3)
+model=st.trainSVM(2)
 #create and train SVM model each time coz bug in opencv 3.1.0 svm.load() https://github.com/Itseez/opencv/issues/4969
 # cam=int(input("Enter Camera number: "))
 cap=cv2.VideoCapture(0)
@@ -43,6 +43,7 @@ while(cap.isOpened()):
 
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
         print(label)
+    
         # print(gesture)
         if(label!=None):
             if temp==0:
@@ -62,6 +63,7 @@ while(cap.isOpened()):
                     text = " ".join(words)
 	        		#text=previousText
                 print (text)
+
 
         # cv2.imshow('PredictedGesture',gesture)				  # showing the best match or prediction
         cv2.putText(img,label,(50,150), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen

@@ -1,3 +1,4 @@
+#this is where the model is trained
 import cv2
 import numpy as np
 from numpy.linalg import norm
@@ -57,6 +58,7 @@ def preprocess_hog(digits):
 
 
 #Here goes my wrappers:
+#histogram of oriented gradients for feature extraction
 def hog_single(img):
 	samples=[]
 	gx = cv2.Sobel(img, cv2.CV_32F, 1, 0)
@@ -77,16 +79,17 @@ def hog_single(img):
 
 	samples.append(hist)
 	return np.float32(samples)
+#train
 def trainSVM(num):
 	imgs=[]
-	for i in range(num+65-1,num+65):
+	for i in range(num+65-1,num+65+2): #change these numbers
     # for i in range(num+65,num+65+1):
 
-		for j in range(1,401):
+		for j in range(1,201):
 			print ('Class '+chr(i)+' is being loaded ')
 			imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))  # all images saved in a list
         # print(imgs)
-	labels = np.repeat(np.arange(num,num+1), 400) # label for each corresponding image saved above
+	labels = np.repeat(np.arange(num,num+3), 200) # label for each corresponding image saved above
 	samples=preprocess_hog(imgs)                # images sent for pre processeing using hog which returns features for the images
 	print('SVM is building wait some time ...')
 	print (len(labels))

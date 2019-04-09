@@ -3,10 +3,9 @@ import numpy as np
 
 
 # cam=int(raw_input("Enter Camera Index : "))
-cap=cv2.VideoCapture(0)
-i=15
-j=1
-
+cap=cv2.VideoCapture(0) #camera
+i=4 #this variable is used to get the number of the character eg:- A = 1
+j=1 #number of the picture. Start with 1
 name=""
 
 def nothing(x) :
@@ -30,16 +29,16 @@ def getMaxContour(contours,minArea=200):
 # cv2.createTrackbar('Cr_max','trackbar',0,255,nothing)
 # cv2.createTrackbar('Cb_min','trackbar',0,255,nothing)
 # cv2.createTrackbar('Cb_max','trackbar',0,255,nothing)
-while(cap.isOpened()):
+while(cap.isOpened()): #if camera is opened
 	# Y_min = cv2.getTrackbarPos('Y_min','trackbar')
 	# Y_max = cv2.getTrackbarPos('Y_max','trackbar')
 	# Cr_min = cv2.getTrackbarPos('Cr_min','trackbar')
 	# Cr_max = cv2.getTrackbarPos('Cr_max','trackbar')
 	# Cb_min = cv2.getTrackbarPos('Cb_min','trackbar')
 	# Cb_max = cv2.getTrackbarPos('Cb_max','trackbar')
-	_,img=cap.read()
-	cv2.rectangle(img,(900,100),(1300,500),(255,0,0),3)
-	img1=img[100:500,900:1300]
+	_,img=cap.read() #read the image
+	cv2.rectangle(img,(100,100),(500,500),(255,0,0),3) #create the rectangle
+	img1=img[100:500,100:500] #just get the image in the rectangle
 	img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB)
 	blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)
 	# skin_ycrcb_min = np.array((Y_min,Cr_min,Cb_min))
@@ -76,5 +75,5 @@ while(cap.isOpened()):
 			i+=1
 
 
-cap.release()
-cv2.destroyAllWindows()
+cap.release() #release the camera resource
+cv2.destroyAllWindows() #close the window
