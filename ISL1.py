@@ -28,23 +28,24 @@ while(cap.isOpened()):
     # sleep(2000)
 
 
-    img1=img[100:500,900:1300]
-    img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB)
-    blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)
-    skin_ycrcb_min = np.array((0, 138, 67))
+    img1=img[100:500,900:1300] #Image within the rectangle is cropped out
+    img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB) #hand region is segmented
+    blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)  #the image is blurred
+    skin_ycrcb_min = np.array((0, 138, 67)) #trying to detect hand region by giving min and max values
     skin_ycrcb_max = np.array((255, 173, 133))
     mask = cv2.inRange(blur, skin_ycrcb_min, skin_ycrcb_max)  # detecting the hand in the bounding box using skin detection
-    contours,hierarchy = cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL, 2)
-    cnt=ut.getMaxContour(contours,4000)						  # using contours to capture the skin filtered image of the hand
+    contours,hierarchy = cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL, 2) #get the contour
+    cnt=ut.getMaxContour(contours,4000)	 # using contours to capture the skin filtered image of the hand
     # cnt.append(ut.getMaxContour(contours,4000))
     # print(ut.getMaxContour(contours,4000))
     # print(cnt)
     if cnt is not None:
 
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
-        print(label)
+        print(label) #printing out the predicted label
 
         # print(gesture)
+        #for sentence formation, not required for us right now
         if(label!=None):
             if temp==0:
                 previouslabel=label

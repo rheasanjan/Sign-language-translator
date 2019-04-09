@@ -1,4 +1,5 @@
 #this is where the model is trained
+#SVM is used
 import cv2
 import numpy as np
 from numpy.linalg import norm
@@ -14,7 +15,7 @@ class StatModel(object):
 
 class SVM(StatModel):
     def __init__(self, C = 1, gamma = 0.5):
-        self.model = cv2.ml.SVM_create()
+        self.model = cv2.ml.SVM_create() #create the svm model
         # self.model.setGamma(gamma)
         # self.model.setC(C)
         # self.model.setKernel(cv2.SVM_RBF)
@@ -33,6 +34,7 @@ class SVM(StatModel):
         # print(nu.ravel())
         return tup[1]
 
+#feature extraction using HOG
 def preprocess_hog(digits):
     samples = []
     for img in digits:
@@ -82,6 +84,7 @@ def hog_single(img):
 #train
 def trainSVM(num):
 	imgs=[]
+    #get the training data (Training data is the form of A_1.jpg)
 	for i in range(num+65-1,num+65+2): #change these numbers
     # for i in range(num+65,num+65+1):
 
