@@ -43,7 +43,7 @@ while(cap.isOpened()):
 
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
         print(label)
-    
+
         # print(gesture)
         if(label!=None):
             if temp==0:
