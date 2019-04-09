@@ -2,10 +2,11 @@ import cv2
 import numpy as np
 
 
-cam=int(raw_input("Enter Camera Index : "))
-cap=cv2.VideoCapture(cam)
-i=16
-j=201
+# cam=int(raw_input("Enter Camera Index : "))
+cap=cv2.VideoCapture(0)
+i=15
+j=1
+
 name=""
 
 def nothing(x) :
@@ -46,13 +47,13 @@ while(cap.isOpened()):
 
 	skin_ycrcb_min = np.array((0, 138, 67))
 	skin_ycrcb_max = np.array((255, 173, 133))
-	
+
 	mask = cv2.inRange(blur, skin_ycrcb_min, skin_ycrcb_max)
 	#gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#ret,mask = cv2.threshold(gray.copy(),20,255,cv2.THRESH_BINARY)
 	contours,hierarchy = cv2.findContours(mask.copy(),cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 	cnt=getMaxContour(contours,4000)
-	if cnt!=None:
+	if cnt is not None:
 		x,y,w,h = cv2.boundingRect(cnt)
 		imgT=img1[y:y+h,x:x+w]
 		imgT=cv2.bitwise_and(imgT,imgT,mask=mask[y:y+h,x:x+w])
@@ -64,7 +65,7 @@ while(cap.isOpened()):
 	if k == 27:
 		break
 	if k == 13:
-		name=str(unichr(i+64))+"_"+str(j)+".jpg"
+		name=str(chr(i+64))+"_"+str(j)+".jpg"
 		cv2.imwrite(name,imgT)
 		if(j<400):
 			j+=1
@@ -73,7 +74,7 @@ while(cap.isOpened()):
 				j=201
 			j=201
 			i+=1
-		
 
-cap.release()        
+
+cap.release()
 cv2.destroyAllWindows()

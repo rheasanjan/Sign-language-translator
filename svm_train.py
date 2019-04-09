@@ -21,7 +21,7 @@ class SVM(StatModel):
 
     def train(self, samples, responses):
         # print(samples)
-        # print(responses)
+        print(responses)
         self.model.train(samples,  cv2.ml.ROW_SAMPLE, responses.astype(int)) # inbuilt training function
 
     def predict(self, samples):
@@ -79,12 +79,14 @@ def hog_single(img):
 	return np.float32(samples)
 def trainSVM(num):
 	imgs=[]
-	for i in range(65,num+65):
+	for i in range(num+65-1,num+65):
+    # for i in range(num+65,num+65+1):
 
 		for j in range(1,401):
 			print ('Class '+chr(i)+' is being loaded ')
 			imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))  # all images saved in a list
-	labels = np.repeat(np.arange(1,num+1), 400) # label for each corresponding image saved above
+        # print(imgs)
+	labels = np.repeat(np.arange(num,num+1), 400) # label for each corresponding image saved above
 	samples=preprocess_hog(imgs)                # images sent for pre processeing using hog which returns features for the images
 	print('SVM is building wait some time ...')
 	print (len(labels))

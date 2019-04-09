@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 
 
-cam=int(raw_input("Enter Camera Index : "))
-cap=cv2.VideoCapture(cam)
+# cam=int(raw_input("Enter Camera Index : "))
+cap=cv2.VideoCapture(0)
 i=16
 j=201
 name=""
@@ -46,7 +46,7 @@ while(cap.isOpened()):
 
 	skin_ycrcb_min = np.array((0, 138, 67))
 	skin_ycrcb_max = np.array((255, 173, 133))
-	
+
 	mask = cv2.inRange(blur, skin_ycrcb_min, skin_ycrcb_max)
 	#gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 	#ret,mask = cv2.threshold(gray.copy(),20,255,cv2.THRESH_BINARY)
@@ -73,7 +73,7 @@ while(cap.isOpened()):
 				j=201
 			j=201
 			i+=1
-		
 
-cap.release()        
+
+cap.release()
 cv2.destroyAllWindows()
