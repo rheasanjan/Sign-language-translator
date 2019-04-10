@@ -3,7 +3,7 @@ import numpy as np
 import util as ut
 import svm_train as st
 import re
-model=st.trainSVM(2)
+model=st.trainSVM(1)
 #create and train SVM model each time coz bug in opencv 3.1.0 svm.load() https://github.com/Itseez/opencv/issues/4969
 # cam=int(input("Enter Camera number: "))
 cap=cv2.VideoCapture(0)
@@ -24,11 +24,11 @@ while(cap.isOpened()):
     # cv2.waitKey(5000)
     _,img=cap.read()
 
-    cv2.rectangle(img,(900,100),(1300,500),(255,0,0),3) # bounding box which captures ASL sign to be detected by the system
+    cv2.rectangle(img,(300,200),(800,600),(255,0,0),3) # bounding box which captures ASL sign to be detected by the system
     # sleep(2000)
 
 
-    img1=img[100:500,900:1300] #Image within the rectangle is cropped out
+    img1=img[300:600,200:800] #Image within the rectangle is cropped out
     img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB) #hand region is segmented
     blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)  #the image is blurred
     skin_ycrcb_min = np.array((0, 138, 67)) #trying to detect hand region by giving min and max values
