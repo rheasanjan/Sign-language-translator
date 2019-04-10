@@ -4,7 +4,7 @@ import numpy as np
 
 # cam=int(raw_input("Enter Camera Index : "))
 cap=cv2.VideoCapture(0) #camera
-i=4 #this variable is used to get the number of the character eg:- A = 1
+i=1 #this variable is used to get the number of the character eg:- A = 1
 j=1 #number of the picture. Start with 1
 name=""
 
@@ -37,8 +37,8 @@ while(cap.isOpened()): #if camera is opened
 	# Cb_min = cv2.getTrackbarPos('Cb_min','trackbar')
 	# Cb_max = cv2.getTrackbarPos('Cb_max','trackbar')
 	_,img=cap.read() #read the image
-	cv2.rectangle(img,(100,100),(500,500),(255,0,0),3) #create the rectangle
-	img1=img[100:500,100:500] #just get the image in the rectangle
+	cv2.rectangle(img,(300,200),(800,600),(255,0,0),3) #create the rectangle
+	img1=img[300:600,200:800] #just get the image in the rectangle
 	img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB)
 	blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)
 	# skin_ycrcb_min = np.array((Y_min,Cr_min,Cb_min))
