@@ -43,6 +43,12 @@ while(cap.isOpened()):
 
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
         print(label) #printing out the predicted label
+        """ text to speech """
+        # import pyttsx3
+        # engine = pyttsx3.init()
+        # engine.say(label)
+        # engine.runAndWait()
+
 
         # print(gesture)
         #for sentence formation, not required for us right now
@@ -66,16 +72,19 @@ while(cap.isOpened()):
                 print (text)
 
 
+
+
         # cv2.imshow('PredictedGesture',gesture)				  # showing the best match or prediction
         cv2.putText(img,label,(50,150), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen
         # cv2.putText(img,text,(50,450), font,3,(0,0,255),2)
     cv2.imshow('Frame',img)
     cv2.imshow('Mask',mask)
+
+
     k = 0xFF & cv2.waitKey(10)
     if k == 27:
         break
     # del cnt
-
 
 cap.release()
 cv2.destroyAllWindows()

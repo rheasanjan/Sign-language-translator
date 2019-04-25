@@ -40,12 +40,14 @@ while(cap.isOpened()): #if camera is opened
 	cv2.rectangle(img,(100,100),(500,500),(255,0,0),3) #create the rectangle
 	img1=img[100:500,100:500] #just get the image in the rectangle
 	img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB)
+    img_hsv = cv2.cvtColor(img1,cv2.COLOR_BGR2HSV)
 	blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)
 	# skin_ycrcb_min = np.array((Y_min,Cr_min,Cb_min))
 	# skin_ycrcb_max = np.array((Y_max,Cr_max,Cb_max))
 
-	skin_ycrcb_min = np.array((0, 138, 67))
-	skin_ycrcb_max = np.array((255, 173, 133))
+	skin_ycrcb_min = np.array((0, 135, 85))
+	skin_ycrcb_max = np.array((255, 180, 135))
+    HSV_mask = cv2.inRange(img_HSV, (0, 15, 0), (17,170,255))
 
 	mask = cv2.inRange(blur, skin_ycrcb_min, skin_ycrcb_max)
 	#gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -60,6 +62,7 @@ while(cap.isOpened()): #if camera is opened
 		cv2.imshow('Trainer',imgT)
 	cv2.imshow('Frame',img)
 	cv2.imshow('Thresh',mask)
+    cv2.imshow('HSV',HSV_mask)
 	k = 0xFF & cv2.waitKey(10)
 	if k == 27:
 		break
