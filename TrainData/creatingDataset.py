@@ -4,8 +4,8 @@ import numpy as np
 
 # cam=int(raw_input("Enter Camera Index : "))
 cap=cv2.VideoCapture(0) #camera
-i=12#this variable is used to get the number of the character eg:- A = 1
-j=201 #number of the picture. Start with 1
+i=4#5 variable is used to get the number of the character eg:- A = 1
+j=351 #number of the picture. Start with 1
 name=""
 
 def nothing(x) :
