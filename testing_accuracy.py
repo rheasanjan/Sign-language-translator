@@ -3,7 +3,7 @@ import numpy as np
 from numpy.linalg import norm
 from sklearn.metrics import confusion_matrix
 from svm_train import SVM
-# import seaborn
+
 import matplotlib.pyplot as plt
 svm_params = dict( kernel_type = cv2.ml.SVM_RBF,
                     svm_type = cv2.ml.SVM_C_SVC,
@@ -19,10 +19,10 @@ class StatModel(object):
 class SVM(StatModel):
     def __init__(self, C = 1, gamma = 0.5):
         self.model = cv2.ml.SVM_create() #create the svm model
-        # self.model.setGamma(gamma)
-        # self.model.setC(C)
-        # self.model.setKernel(cv2.SVM_RBF)
-        # self.model.setType(cv2.SVM_C_SVC)
+        self.model.setGamma(gamma)
+        self.model.setC(C)
+        self.model.setKernel(cv2.ml.SVM_RBF)
+        self.model.setType(cv2.ml.SVM_C_SVC)
 
     def train(self, samples, responses):
         # print(samples)
@@ -83,28 +83,28 @@ def hog_single(img):
 def trainSVM(num):
     imgs=[]
     for i in range(num+65-1,num+65+25):
-    	for j in range(1,351):
+    	for j in range(1,326):
     		print ('loading TrainData/'+chr(i)+'_'+str(j)+'.jpg')
     		imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))
         # print("Loading train data")
-    labels = np.repeat(np.arange(num,num+26), 350)
+    labels = np.repeat(np.arange(num,num+26), 325)
     samples=preprocess_hog(imgs)
     # print(samples)
     print('training SVM...')
     print (len(labels))
     print (len(samples))
-    model = SVM(C=3, gamma=5.383)
+    model = SVM(C=2.67, gamma=5.383)
     model.train(samples,labels) #,params=svm_params)
     return model
 
 def testSVM(num):
     imgs=[]
     for i in range(num+65-1,num+65+25):
-    	for j in range(351,401):
+    	for j in range(326,401):
     		print ('loading TestData/'+chr(i)+'_'+str(j)+'.jpg')
     		imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))
         # print("Loading Test data...")
-    labels_test = np.repeat(np.arange(num,num+26), 50)
+    labels_test = np.repeat(np.arange(num,num+26), 75)
     print('testing SVM...')
     print (len(labels_test))
     print (len(imgs))
@@ -142,4 +142,4 @@ ax.set_xticklabels(char_labels)
 ax.set_ylabel('Accuracy')
 ax.set_xlabel('Characters')
 
-# plt.show()
+plt.show()
