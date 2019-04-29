@@ -4,11 +4,11 @@ from numpy.linalg import norm
 from sklearn.metrics import confusion_matrix
 from svm_train import SVM
 # import seaborn
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 svm_params = dict( kernel_type = cv2.ml.SVM_RBF,
                     svm_type = cv2.ml.SVM_C_SVC,
                     C=2.67, gamma=5.383 )
-
+char_labels = []
 class StatModel(object):
     def load(self, fn):
         self.model.load(fn)  #python rapper bug
@@ -128,6 +128,18 @@ for i in test_images:
     	count+=1.0
     k+=1
 # print("predicted=", predicted_labels)
-conf = confusion_matrix(actual_labels,predicted_labels, labels=None, sample_weight=None)
-print(conf)
+cm = confusion_matrix(actual_labels,predicted_labels, labels=None, sample_weight=None)
+print(cm)
 print ("accuracy=" , (count/k)*100 ," %")
+cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] * 100
+print(cm.diagonal())
+fig,ax = plt.subplots()
+for i in range(ord('A'), ord('Z')+1):
+    char_labels.append(chr(i))
+plt.bar(np.arange(1,27),cm.diagonal(),width=0.6)
+ax.set_xticks(np.arange(1,27))
+ax.set_xticklabels(char_labels)
+ax.set_ylabel('Accuracy')
+ax.set_xlabel('Characters')
+
+# plt.show()
