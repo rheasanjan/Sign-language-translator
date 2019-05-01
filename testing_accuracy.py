@@ -3,12 +3,12 @@ import numpy as np
 from numpy.linalg import norm
 from sklearn.metrics import confusion_matrix
 from svm_train import SVM
-# import seaborn
-# import matplotlib.pyplot as plt
+
+import matplotlib.pyplot as plt
 svm_params = dict( kernel_type = cv2.ml.SVM_RBF,
                     svm_type = cv2.ml.SVM_C_SVC,
                     C=2.67, gamma=5.383 )
-
+char_labels = []
 class StatModel(object):
     def load(self, fn):
         self.model.load(fn)  #python rapper bug
@@ -19,10 +19,10 @@ class StatModel(object):
 class SVM(StatModel):
     def __init__(self, C = 1, gamma = 0.5):
         self.model = cv2.ml.SVM_create() #create the svm model
-        # self.model.setGamma(gamma)
-        # self.model.setC(C)
-        # self.model.setKernel(cv2.SVM_RBF)
-        # self.model.setType(cv2.SVM_C_SVC)
+        self.model.setGamma(gamma)
+        self.model.setC(C)
+        self.model.setKernel(cv2.ml.SVM_RBF)
+        self.model.setType(cv2.ml.SVM_C_SVC)
 
     def train(self, samples, responses):
         # print(samples)
@@ -83,28 +83,28 @@ def hog_single(img):
 def trainSVM(num):
     imgs=[]
     for i in range(num+65-1,num+65+25):
-    	for j in range(1,351):
+    	for j in range(1,326):
     		print ('loading TrainData/'+chr(i)+'_'+str(j)+'.jpg')
     		imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))
         # print("Loading train data")
-    labels = np.repeat(np.arange(num,num+26), 350)
+    labels = np.repeat(np.arange(num,num+26), 325)
     samples=preprocess_hog(imgs)
     # print(samples)
     print('training SVM...')
     print (len(labels))
     print (len(samples))
-    model = SVM(C=3, gamma=5.383)
+    model = SVM(C=2.67, gamma=5.383)
     model.train(samples,labels) #,params=svm_params)
     return model
 
 def testSVM(num):
     imgs=[]
     for i in range(num+65-1,num+65+25):
-    	for j in range(351,401):
+    	for j in range(326,401):
     		print ('loading TestData/'+chr(i)+'_'+str(j)+'.jpg')
     		imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))
         # print("Loading Test data...")
-    labels_test = np.repeat(np.arange(num,num+26), 50)
+    labels_test = np.repeat(np.arange(num,num+26), 75)
     print('testing SVM...')
     print (len(labels_test))
     print (len(imgs))
@@ -128,6 +128,18 @@ for i in test_images:
     	count+=1.0
     k+=1
 # print("predicted=", predicted_labels)
-conf = confusion_matrix(actual_labels,predicted_labels, labels=None, sample_weight=None)
-print(conf)
+cm = confusion_matrix(actual_labels,predicted_labels, labels=None, sample_weight=None)
+print(cm)
 print ("accuracy=" , (count/k)*100 ," %")
+cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] * 100
+print(cm.diagonal())
+fig,ax = plt.subplots()
+for i in range(ord('A'), ord('Z')+1):
+    char_labels.append(chr(i))
+plt.bar(np.arange(1,27),cm.diagonal(),width=0.6)
+ax.set_xticks(np.arange(1,27))
+ax.set_xticklabels(char_labels)
+ax.set_ylabel('Accuracy')
+ax.set_xlabel('Characters')
+
+plt.show()

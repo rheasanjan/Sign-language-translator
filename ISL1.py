@@ -3,20 +3,18 @@ import numpy as np
 import util as ut
 import svm_train as st
 import re
-model=st.trainSVM(1)
+model=st.trainSVM(1) # pass the number of starting character (Eg A-> 1)
 #create and train SVM model each time coz bug in opencv 3.1.0 svm.load() https://github.com/Itseez/opencv/issues/4969
-# cam=int(input("Enter Camera number: "))
-cap=cv2.VideoCapture(0)
+
+cap=cv2.VideoCapture(0) #capture the image
+# cap.set(cv2.CAP_PROP_FPS, )
+print(cap.get(cv2.CAP_PROP_FPS))
+
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 def nothing(x) :
     pass
 
-text= " "
-
-temp=0
-previouslabel=None
-previousText=" "
 label = None
 
 while(cap.isOpened()):
@@ -49,33 +47,8 @@ while(cap.isOpened()):
         # engine.say(label)
         # engine.runAndWait()
 
-
-        # print(gesture)
-        #for sentence formation, not required for us right now
-        if(label!=None):
-            if temp==0:
-                previouslabel=label
-            if previouslabel==label:
-            	previouslabel=label
-            	temp+=1
-            else:
-	            temp=0
-            if(temp==40):
-                if(label=='P'):
-                    label=" "
-                text= text + label
-                if(label=='Q'):
-                    words = re.split(" +",text)
-                    words.pop()
-                    text = " ".join(words)
-	        		#text=previousText
-                print (text)
-
-
-
-
         # cv2.imshow('PredictedGesture',gesture)				  # showing the best match or prediction
-        cv2.putText(img,label,(50,150), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen
+        cv2.putText(img,label,(50,200), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen
         # cv2.putText(img,text,(50,450), font,3,(0,0,255),2)
     cv2.imshow('Frame',img)
     cv2.imshow('Mask',mask)

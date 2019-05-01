@@ -16,10 +16,10 @@ class StatModel(object):
 class SVM(StatModel):
     def __init__(self, C = 1, gamma = 0.5):
         self.model = cv2.ml.SVM_create() #create the svm model
-        # self.model.setGamma(gamma)
-        # self.model.setC(C)
-        # self.model.setKernel(cv2.SVM_RBF)
-        # self.model.setType(cv2.SVM_C_SVC)
+        self.model.setGamma(gamma)
+        self.model.setC(C)
+        self.model.setKernel(cv2.ml.SVM_RBF)
+        self.model.setType(cv2.ml.SVM_C_SVC)
 
     def train(self, samples, responses):
         # print(samples)
@@ -85,14 +85,14 @@ def hog_single(img):
 def trainSVM(num):
 	imgs=[]
     #get the training data (Training data is the form of A_1.jpg)
-	for i in range(num+65-1,num+65+25): #change these numbers
+	for i in range(num+65-1,num+65+2): #change these numbers
     # for i in range(num+65,num+65+1):
 
 		for j in range(1,401):
 			print ('Class '+chr(i)+' is being loaded ')
 			imgs.append(cv2.imread('TrainData/'+chr(i)+'_'+str(j)+'.jpg',0))  # all images saved in a list
         # print(imgs)
-	labels = np.repeat(np.arange(num,num+26), 400) # label for each corresponding image saved above
+	labels = np.repeat(np.arange(num,num+3), 400) # label for each corresponding image saved above
 	samples=preprocess_hog(imgs)                # images sent for pre processeing using hog which returns features for the images
 	print('SVM is building wait some time ...')
 	print (len(labels))
