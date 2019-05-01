@@ -6,7 +6,7 @@ import re
 model=st.trainSVM(1)
 #create and train SVM model each time coz bug in opencv 3.1.0 svm.load() https://github.com/Itseez/opencv/issues/4969
 # cam=int(input("Enter Camera number: "))
-cap=cv2.VideoCapture(0)
+cap=cv2.VideoCapture(0) #camera 0 captures the images
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 def nothing(x) :
