@@ -6,9 +6,8 @@ import re
 model=st.trainSVM(1) # pass the number of starting character (Eg A-> 1)
 #create and train SVM model each time coz bug in opencv 3.1.0 svm.load() https://github.com/Itseez/opencv/issues/4969
 
-cap=cv2.VideoCapture(0) #capture the image
-# cap.set(cv2.CAP_PROP_FPS, )
-print(cap.get(cv2.CAP_PROP_FPS))
+# cam=int(input("Enter Camera number: "))
+cap=cv2.VideoCapture(0) #camera 0 captures the images
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
