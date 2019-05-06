@@ -21,7 +21,7 @@ while(cap.isOpened()):
     # cv2.waitKey(5000)
     _,img=cap.read()
 
-    cv2.rectangle(img,(300,200),(800,600),(255,0,0),3) # bounding box which captures ASL sign to be detected by the system
+    cv2.rectangle(img,(300,200),(800,600),(255,0,0),3) # bounding box which captures ISL sign to be detected by the system
     # sleep(2000)
 
 
@@ -33,14 +33,13 @@ while(cap.isOpened()):
     mask = cv2.inRange(blur, skin_ycrcb_min, skin_ycrcb_max)  # detecting the hand in the bounding box using skin detection
     contours,hierarchy = cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL, 2) #get the contour
     cnt=ut.getMaxContour(contours,4000)	 # using contours to capture the skin filtered image of the hand
-    # cnt.append(ut.getMaxContour(contours,4000))
-    # print(ut.getMaxContour(contours,4000))
-    # print(cnt)
+    """Variable 'cnt' = maximum contours """
     if cnt is not None:
 
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
         print(label) #printing out the predicted label
         """ text to speech """
+        """ if previous is not equal to present label,then speak"""
         # import pyttsx3
         # engine = pyttsx3.init()
         # engine.say(label)

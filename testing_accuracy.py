@@ -21,7 +21,7 @@ class SVM(StatModel):
         self.model = cv2.ml.SVM_create() #create the svm model
         self.model.setGamma(gamma)
         self.model.setC(C)
-        self.model.setKernel(cv2.ml.SVM_RBF)
+        self.model.setKernel(cv2.ml.SVM_LINEAR)
         self.model.setType(cv2.ml.SVM_C_SVC)
 
     def train(self, samples, responses):
@@ -93,7 +93,7 @@ def trainSVM(num):
     print('training SVM...')
     print (len(labels))
     print (len(samples))
-    model = SVM(C=2.67, gamma=5.383)
+    model = SVM(C=5, gamma=7)
     model.train(samples,labels) #,params=svm_params)
     return model
 
@@ -131,6 +131,8 @@ for i in test_images:
 cm = confusion_matrix(actual_labels,predicted_labels, labels=None, sample_weight=None)
 print(cm)
 print ("accuracy=" , (count/k)*100 ," %")
+from sklearn.metrics import precision_score,recall_score
+print(precision_score(actual_labels,predicted_labels,average='micro'),recall_score(actual_labels,predicted_labels,average='micro'))
 cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis] * 100
 print(cm.diagonal())
 fig,ax = plt.subplots()
