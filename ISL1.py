@@ -26,10 +26,10 @@ while(cap.isOpened()):
 
 
     img1=img[300:600,200:800] #Image within the rectangle is cropped out
-    img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB) #hand region is segmented
+    img_ycrcb = cv2.cvtColor(img1, cv2.COLOR_BGR2YCR_CB) #convert to ycbcr model
     blur = cv2.GaussianBlur(img_ycrcb,(11,11),0)  #the image is blurred
-    skin_ycrcb_min = np.array((0, 138, 67)) #trying to detect hand region by giving min and max values
-    skin_ycrcb_max = np.array((255, 173, 133))
+    skin_ycrcb_min = np.array((0, 133, 80)) #trying to detect hand region by giving min and max values
+    skin_ycrcb_max = np.array((255, 173, 120))
     mask = cv2.inRange(blur, skin_ycrcb_min, skin_ycrcb_max)  # detecting the hand in the bounding box using skin detection
     contours,hierarchy = cv2.findContours(mask.copy(),cv2.RETR_EXTERNAL, 2) #get the contour
     cnt=ut.getMaxContour(contours,4000)	 # using contours to capture the skin filtered image of the hand
@@ -39,7 +39,7 @@ while(cap.isOpened()):
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
         print(label) #printing out the predicted label
         """ text to speech """
-        """ if previous is not equal to present label,then speak"""
+        """ if previous is equal to present label,then speak"""
         # import pyttsx3
         # engine = pyttsx3.init()
         # engine.say(label)

@@ -61,36 +61,33 @@ def preprocess_hog(digits):
 #for a single image (while predicting)
 def hog_single(img):
     samples=[]
-    # print(np.shape(img))
     # we can deduce that a method to detect edges in an image can be performed
     #by locating pixel locations where the gradient is higher than its neighbors
     #The Sobel Operator is a discrete differentiation operator. It computes an approximation of the gradient of an image intensity function.
     #The Sobel Operator combines Gaussian smoothing and differentiation.
-    gx = cv2.Sobel(img, cv2.CV_32F, 1, 0,1)#gx is the gradient in x direction
-    gy = cv2.Sobel(img, cv2.CV_32F, 0, 1,1)#gy is the gradient in y direction
-    # cv2.imshow('gx',gx)
-    # cv2.imshow('gy',gy)
+    gx = cv2.Sobel(img, cv2.CV_32F, 1, 0)#gx is the gradient in x direction
+    gy = cv2.Sobel(img, cv2.CV_32F, 0, 1)#gy is the gradient in y direction
     mag, ang = cv2.cartToPolar(gx, gy) #get magnitude and angle of the gradient
     bin_n = 16 #no of bins
-    # print(np.shape(mag))
-    # print(np.shape(ang))
     bin = np.int32(bin_n*ang/(2*np.pi))
-    # print(np.shape(bin))
+    #divide the image into 4 sub squares
     bin_cells = bin[:100,:100], bin[100:,:100], bin[:100,100:], bin[100:,100:]
     mag_cells = mag[:100,:100], mag[100:,:100], mag[:100,100:], mag[100:,100:]
-    print(np.shape(mag_cells))
+    # print(np.shape(bin_cells))
+    # print(np.shape(mag_cells))
+    #create histogram for each subsquare
     hists = [np.bincount(b.ravel(), m.ravel(), bin_n) for b, m in zip(bin_cells, mag_cells)]
+    # print(np.shape(hists))
+    #combine the 4 histograms
     hist = np.hstack(hists)
-    # print(hist)
-    # transform to Hellinger kernel
-    eps = 1e-7
+    # print(np.shape(hist))
+    # Normalize
+    eps = 1e-7 #1x10^-7
     hist /= hist.sum() + eps
     hist = np.sqrt(hist)
     hist /= norm(hist) + eps
 
     samples.append(hist)
-    print(np.shape(samples))
-    print(samples)
     return np.float32(samples)
 #train
 def trainSVM(num):

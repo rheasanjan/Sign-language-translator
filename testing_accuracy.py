@@ -21,7 +21,7 @@ class SVM(StatModel):
         self.model = cv2.ml.SVM_create() #create the svm model
         self.model.setGamma(gamma)
         self.model.setC(C)
-        self.model.setKernel(cv2.ml.SVM_LINEAR)
+        self.model.setKernel(cv2.ml.SVM_RBF)
         self.model.setType(cv2.ml.SVM_C_SVC)
 
     def train(self, samples, responses):
