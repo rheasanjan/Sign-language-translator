@@ -3,16 +3,23 @@ import numpy as np
 import util as ut
 import svm_train as st
 import re
+import os
+# -*- coding: utf-8 -*-
+from espeakng import ESpeakNG
 model=st.trainSVM(1) # pass the number of starting character (Eg A-> 1)
 #create and train SVM model each time coz bug in opencv 3.1.0 svm.load() https://github.com/Itseez/opencv/issues/4969
 
 # cam=int(input("Enter Camera number: "))
 cap=cv2.VideoCapture(0) #camera 0 captures the images
+previousLabel = ""
+temp= 0
+finalLabel = ""
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 def nothing(x) :
     pass
+
 
 label = None
 
@@ -37,19 +44,25 @@ while(cap.isOpened()):
     if cnt is not None:
 
         gesture,label=ut.getGestureImg(cnt,img1,mask,model)   # passing the trained model for prediction and fetching the result
-        print(label) #printing out the predicted label
-        """ text to speech """
-        """ if previous is equal to present label,then speak"""
-        # import pyttsx3
-        # engine = pyttsx3.init()
-        # engine.say(label)
-        # engine.runAndWait()
+        # print(label) #printing out the predicted label
 
-        # cv2.imshow('PredictedGesture',gesture)				  # showing the best match or prediction
-        cv2.putText(img,label,(50,200), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen
-        # cv2.putText(img,text,(50,450), font,3,(0,0,255),2)
+        if (temp == 0):
+            previousLabel = label
+            # print(previousLabel)
+        if (previousLabel == label):
+            temp+=1
+        else:
+            temp=0
+        if (temp == 20 ):
+            cv2.putText(img,finalLabel,(50,200), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen
+            os.system("espeak '{0}'".format(label))
+            finalLabel= label
+            temp = 0
+
+        cv2.putText(img,finalLabel,(50,200), font,8,(0,125,155),2)  # displaying the predicted letter on the main screen
+        cv2.putText(img,label,(850,650), font,3,(0,0,255),2)
     cv2.imshow('Frame',img)
-    cv2.imshow('Mask',mask)
+    # cv2.imshow('Mask',mask)
 
 
     k = 0xFF & cv2.waitKey(10)
